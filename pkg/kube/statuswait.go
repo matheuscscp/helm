@@ -231,7 +231,9 @@ func contextWithTimeout(ctx context.Context, timeout time.Duration) (context.Con
 }
 
 func statusObserver(cancel context.CancelFunc, desired status.Status, logger *slog.Logger) collector.ObserverFunc {
-	return func(statusCollector *collector.ResourceStatusCollector, _ event.Event) {
+	return func(statusCollector *collector.ResourceStatusCollector, e event.Event) {
+		logger.Debug("received event", "event", e)
+
 		var rss []*event.ResourceStatus
 		var nonDesiredResources []*event.ResourceStatus
 		for _, rs := range statusCollector.ResourceStatuses {
